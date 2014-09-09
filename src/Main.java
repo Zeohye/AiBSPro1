@@ -11,8 +11,8 @@ public class Main {
     static int[][] delTable;
     public static void main(String[] args){
         String seq1,seq2;
-        int a = 5;
-        int b = 5;
+        int a = Integer.parseInt(args[0]);
+        int b = Integer.parseInt(args[1]);
         Map matrix = null;
         try {
             seq1 = FASTAParser.Parse("input/seq1.fasta");
@@ -30,23 +30,35 @@ public class Main {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
-        Util.printMatrix(fillTableAffine(seq1, seq2, matrix, a, b));
-        affineCostBackTrack callback = new affineCostBackTrack();
-        callback.backTrack(seq1,seq2,scoreTable,matrix,"","",true,a,b);
-
-        System.out.println(callback.getSequenses1().get(0));
-        System.out.println(callback.getSequenses2().get(0));
-        System.out.println(callback.getSequenses1().size());
-
-        Util.printMatrix(fillTableLinear(seq1, seq2, matrix, 5));
+       // Util.printMatrix(fillTableLinear(seq1, seq2, matrix, 5));
+        fillTableLinear(seq1, seq2, matrix, 5);
         linearCostBackTrack lCallBack = new linearCostBackTrack();
         lCallBack.backTrack(seq1,seq2,scoreTable,matrix,"","",true,a);
 
+        System.out.println("Linear solutions");
+        System.out.println(">seq1");
         System.out.println(lCallBack.getSequenses1().get(0));
+        System.out.println(">seq2");
         System.out.println(lCallBack.getSequenses2().get(0));
+        System.out.println(">Number of optimal alignments");
         System.out.println(lCallBack.getSequenses1().size());
+        System.out.println(">Optimal Score");
+        System.out.println(scoreTable[seq1.length()][seq2.length()]);
+
+        //Util.printMatrix(fillTableAffine(seq1, seq2, matrix, a, b));
+        fillTableAffine(seq1, seq2, matrix, a, b);
+        affineCostBackTrack callback = new affineCostBackTrack();
+        callback.backTrack(seq1,seq2,scoreTable,matrix,"","",true,a,b);
+
+        System.out.println("Affine solutions");
+        System.out.println(">seq1");
+        System.out.println(callback.getSequenses1().get(0));
+        System.out.println(">seq2");
+        System.out.println(callback.getSequenses2().get(0));
+        System.out.println(">Number of optimal alignments");
+        System.out.println(callback.getSequenses1().size());
+        System.out.println(">Optimal Score");
+        System.out.println(scoreTable[seq1.length()][seq2.length()]);
     }
 
     public static int[][] fillTableLinear(String seq1, String seq2, Map<String, Integer> matrix, int gapCost){
