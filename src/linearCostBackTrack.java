@@ -55,7 +55,6 @@ public class linearCostBackTrack {
                 result1 = seq1.charAt(seq1.length() - n - 1) + result1;
             }
         }
-
         Sequences1.add(result1);
         Sequences2.add(result2);
     }
