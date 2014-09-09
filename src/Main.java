@@ -40,10 +40,16 @@ public class Main {
         System.out.println(callback.getSequenses2().get(0));
         System.out.println(callback.getSequenses1().size());
 
-        Util.printMatrix(filleTableLinear(seq1, seq2, matrix, 5));
+        Util.printMatrix(fillTableLinear(seq1, seq2, matrix, 5));
+        linearCostBackTrack lCallBack = new linearCostBackTrack();
+        lCallBack.backTrack(seq1,seq2,scoreTable,matrix,"","",true,a);
+
+        System.out.println(lCallBack.getSequenses1().get(0));
+        System.out.println(lCallBack.getSequenses2().get(0));
+        System.out.println(lCallBack.getSequenses1().size());
     }
 
-    public static int[][] filleTableLinear (String seq1, String seq2, Map<String,Integer> matrix,int gapCost){
+    public static int[][] fillTableLinear(String seq1, String seq2, Map<String, Integer> matrix, int gapCost){
         scoreTable = new int [seq1.length()+1][seq2.length()+1];
         scoreTable[0][0]=0;
         for(int i = 1; i<=seq1.length();i++){
