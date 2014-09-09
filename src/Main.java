@@ -30,7 +30,7 @@ public class Main {
         } catch (IOException e) {
             e.printStackTrace();
         }
-       // Util.printMatrix(fillTableLinear(seq1, seq2, matrix, 5));
+        //Util.printMatrix(fillTableLinear(seq1, seq2, matrix, a));
         fillTableLinear(seq1, seq2, matrix, 5);
         linearCostBackTrack lCallBack = new linearCostBackTrack();
         lCallBack.backTrack(seq1,seq2,scoreTable,matrix,"","",true,a);
@@ -43,7 +43,7 @@ public class Main {
         System.out.println(">Number of optimal alignments");
         System.out.println(lCallBack.getSequenses1().size());
         System.out.println(">Optimal Score");
-        System.out.println(-1*scoreTable[seq1.length()][seq2.length()]);
+        System.out.println(scoreTable[seq1.length()][seq2.length()]);
 
         //Util.printMatrix(fillTableAffine(seq1, seq2, matrix, a, b));
         fillTableAffine(seq1, seq2, matrix, a, b);
@@ -58,17 +58,17 @@ public class Main {
         System.out.println(">Number of optimal alignments");
         System.out.println(callback.getSequenses1().size());
         System.out.println(">Optimal Score");
-        System.out.println(-1*scoreTable[seq1.length()][seq2.length()]);
+        System.out.println(scoreTable[seq1.length()][seq2.length()]);
     }
 
     public static int[][] fillTableLinear(String seq1, String seq2, Map<String, Integer> matrix, int gapCost){
         scoreTable = new int [seq1.length()+1][seq2.length()+1];
         scoreTable[0][0]=0;
         for(int i = 1; i<=seq1.length();i++){
-            scoreTable [i][0]=-1*i*gapCost;
+            scoreTable [i][0]=i*gapCost;
         }
         for(int j = 1; j<=seq2.length(); j++){
-            scoreTable [0][j]=-1*j*gapCost;
+            scoreTable [0][j]=j*gapCost;
         }
 
         for(int i = 1; i<=seq1.length();i++){
@@ -76,9 +76,9 @@ public class Main {
                 int v1,v2,v3;
                 String value = ""+seq1.charAt(i-1)+seq2.charAt(j-1);
                 v1 = scoreTable[i-1][j-1]+matrix.get(value);
-                v2 = scoreTable[i-1][j]-gapCost;
-                v3 = scoreTable[i][j-1]-gapCost;
-                scoreTable[i][j] = Util.max3(v1, v2, v3);
+                v2 = scoreTable[i-1][j]+gapCost;
+                v3 = scoreTable[i][j-1]+gapCost;
+                scoreTable[i][j] = Util.min3(v1, v2, v3);
             }
         }
         return scoreTable;
@@ -97,33 +97,33 @@ public class Main {
                 }
                 //delTable
                 if(i==1)
-                    delTable[i][j]=scoreTable[i - 1][j] - (a + b);
+                    delTable[i][j]=scoreTable[i - 1][j] + (a + b);
                 else if(i>1)
-                    delTable[i][j]=Math.max(scoreTable[i - 1][j] - (a + b), delTable[i - 1][j] - a);
+                    delTable[i][j]=Math.min(scoreTable[i - 1][j] + (a + b), delTable[i - 1][j] + a);
                 //insTable
                 if(j==1)
-                    insTable[i][j]=scoreTable[i][j-1]-(a+b);
+                    insTable[i][j]=scoreTable[i][j-1]+(a+b);
                 else if(j>1)
-                    insTable[i][j]=Math.max(scoreTable[i][j-1]-(a+b),insTable[i][j-1]-a);
+                    insTable[i][j]=Math.min(scoreTable[i][j-1]+(a+b),insTable[i][j-1]+a);
 
                 int v1,v2,v3;
                 if(i>0 && j>0) {
                     String value = "" + seq1.charAt(i - 1) + seq2.charAt(j - 1);
                     v1 = scoreTable[i - 1][j - 1] + (matrix.get(value));
                 }else
-                    v1 = Integer.MIN_VALUE;
+                    v1 = Integer.MAX_VALUE;
 
                 if(i>0)
                     v2 = delTable[i][j];
                 else
-                    v2 = Integer.MIN_VALUE;
+                    v2 = Integer.MAX_VALUE;
 
                 if(j>0)
                     v3 = insTable[i][j];
                 else
-                    v3 = Integer.MIN_VALUE;
+                    v3 = Integer.MAX_VALUE;
 
-                scoreTable[i][j] = Util.max3(v1, v2, v3);
+                scoreTable[i][j] = Util.min3(v1, v2, v3);
             }
         }
         return scoreTable;

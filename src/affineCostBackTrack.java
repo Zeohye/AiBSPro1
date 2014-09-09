@@ -24,7 +24,7 @@ public class affineCostBackTrack {
             int k = 1;
             while (true) {
                 //Check Insertion block
-                if (i >= k && table[i][j] == table[i - k][j] - ScoreFunctions.affineGapCost(a, b, k)) {
+                if (i >= k && table[i][j] == table[i - k][j] + ScoreFunctions.affineGapCost(a, b, k)) {
                     String res1=result1;
                     String res2=result2;
                     for (int n = 0; n < k; n++) {
@@ -35,7 +35,7 @@ public class affineCostBackTrack {
                     if (!full) return;
                 }
                 //Check Deletion block
-                if (j >= k && table[i][j] == table[i][j - k] - ScoreFunctions.affineGapCost(a, b, k)) {
+                if (j >= k && table[i][j] == table[i][j - k] + ScoreFunctions.affineGapCost(a, b, k)) {
                     String res1 = result1;
                     String res2 = result2;
                     for (int n = 0; n < k; n++) {

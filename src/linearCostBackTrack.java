@@ -21,7 +21,7 @@ public class linearCostBackTrack {
                 if (!full) return;
             }
             //Check Insertion block
-            if (table[i][j] == table[i - 1][j] + ScoreFunctions.linierGapCost(k)) {
+            if (table[i][j] == table[i - 1][j] - ScoreFunctions.linierGapCost(k)) {
                 String res1=result1;
                 String res2=result2;
                 res2 = "-" + res2;
@@ -30,7 +30,7 @@ public class linearCostBackTrack {
                 if (!full) return;
             }
             //Check Deletion block
-            if (table[i][j] == table[i][j - 1] + ScoreFunctions.linierGapCost(k)) {
+            if (table[i][j] == table[i][j - 1] - ScoreFunctions.linierGapCost(k)) {
                 String res1 = result1;
                 String res2 = result2;
                 res1 = "-" + res1;
