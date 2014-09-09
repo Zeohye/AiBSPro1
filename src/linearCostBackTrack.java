@@ -35,7 +35,7 @@ public class linearCostBackTrack {
                 String res2 = result2;
                 res1 = "-" + res1;
                 res2 = seq2.charAt(seq2.length() -1) + res2;
-                backTrack(seq1, seq2.substring(0, i - 1), table, matrix, res1, res2, full,k);
+                backTrack(seq1, seq2.substring(0, j - 1), table, matrix, res1, res2, full,k);
                 if (!full) return;
             }
             return;

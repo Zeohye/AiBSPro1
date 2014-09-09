@@ -43,7 +43,7 @@ public class Main {
         System.out.println(">Number of optimal alignments");
         System.out.println(lCallBack.getSequenses1().size());
         System.out.println(">Optimal Score");
-        System.out.println(scoreTable[seq1.length()][seq2.length()]);
+        System.out.println(-1*scoreTable[seq1.length()][seq2.length()]);
 
         //Util.printMatrix(fillTableAffine(seq1, seq2, matrix, a, b));
         fillTableAffine(seq1, seq2, matrix, a, b);
@@ -58,7 +58,7 @@ public class Main {
         System.out.println(">Number of optimal alignments");
         System.out.println(callback.getSequenses1().size());
         System.out.println(">Optimal Score");
-        System.out.println(scoreTable[seq1.length()][seq2.length()]);
+        System.out.println(-1*scoreTable[seq1.length()][seq2.length()]);
     }
 
     public static int[][] fillTableLinear(String seq1, String seq2, Map<String, Integer> matrix, int gapCost){
