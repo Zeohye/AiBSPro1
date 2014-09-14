@@ -10,17 +10,24 @@ public class Main {
     static int[][] insTable;
     static int[][] delTable;
     public static void main(String[] args){
-        String seq1,seq2;
-        int a = Integer.parseInt(args[0]);
-        int b = Integer.parseInt(args[1]);
+        //run all eval tests
+        if(args[0].equals("eval")){
+            runEvalTest();
+            return;
+        }
+        int linear = Integer.parseInt(args[0]);
+        int a = Integer.parseInt(args[1]);
+        int b = Integer.parseInt(args[2]);
+        String seq1 = args[3];
+        String seq2 = args[4];
         Map matrix = null;
         try {
-            seq1 = FASTAParser.Parse("input/seq1.fasta");
+            seq1 = FASTAParser.Parse("input/"+seq1+".fasta");
         } catch (IOException e) {
             seq1 = "";
         }
         try {
-            seq2 = FASTAParser.Parse("input/seq2.fasta");
+            seq2 = FASTAParser.Parse("input/"+seq2+".fasta");
         } catch (IOException e) {
             seq2="";
         }
@@ -31,7 +38,7 @@ public class Main {
             e.printStackTrace();
         }
         //Util.printMatrix(fillTableLinear(seq1, seq2, matrix, a));
-        fillTableLinear(seq1, seq2, matrix, 5);
+        fillTableLinear(seq1, seq2, matrix, linear);
         linearCostBackTrack lCallBack = new linearCostBackTrack();
         lCallBack.backTrack(seq1,seq2,scoreTable,matrix,"","",true,a);
 
@@ -127,5 +134,72 @@ public class Main {
             }
         }
         return scoreTable;
+    }
+
+    public static void runEvalTest(){
+        int linear = 5;
+        int a = 5;
+        int b = 5;
+        String seq1,seq2,seq3,seq4,seq5;
+        Map matrix = null;
+        try {
+            seq1 = FASTAParser.Parse("input/eval_seq1.fasta");
+            seq2 = FASTAParser.Parse("input/eval_seq2.fasta");
+            seq3 = FASTAParser.Parse("input/eval_seq3.fasta");
+            seq4 = FASTAParser.Parse("input/eval_seq4.fasta");
+            seq5 = FASTAParser.Parse("input/eval_seq5.fasta");
+            matrix = matrixParser.Parse("input/eval_scoreMatrix.txt");
+        } catch (IOException e) {
+            seq1="";seq2="";seq3="";seq4="";seq5="";
+        }
+        System.out.println("Question 1:");
+        fillTableLinear(seq1, seq2, matrix, linear);
+        linearCostBackTrack lCallBack = new linearCostBackTrack();
+        lCallBack.backTrack(seq1,seq2,scoreTable,matrix,"","",true,a);
+        System.out.println(">Optimal Score");
+        System.out.println(scoreTable[seq1.length()][seq2.length()]);
+        System.out.println(">Number of optimal alignments");
+        System.out.println(lCallBack.getSequenses1().size());
+        System.out.println(">seq1");
+        System.out.println(lCallBack.getSequenses1().get(0));
+        System.out.println(">seq2");
+        System.out.println(lCallBack.getSequenses2().get(0));
+
+        System.out.println();
+        System.out.println("Question 2:");
+        fillTableAffine(seq1, seq2, matrix, a, b);
+        affineCostBackTrack callback = new affineCostBackTrack();
+        callback.backTrack(seq1,seq2,scoreTable,matrix,"","",true,a,b);
+
+        System.out.println(">Optimal Score");
+        System.out.println(scoreTable[seq1.length()][seq2.length()]);
+        System.out.println(">Number of optimal alignments");
+        System.out.println(callback.getSequenses1().size());
+        System.out.println(">seq1");
+        System.out.println(callback.getSequenses1().get(0));
+        System.out.println(">seq2");
+        System.out.println(callback.getSequenses2().get(0));
+
+        System.out.println();
+        System.out.println("Question 3:");
+        int[][] resultQ3 = new int[5][5];
+        int[][] resultQ4 = new int[5][5];
+        String[] array = {seq1,seq2,seq3,seq4,seq5};
+        for(int i = 0; i<5;i++){
+            for(int j = 0; j<5;j++){
+                if(i==j){
+                    resultQ3[i][j]=0;
+                    resultQ4[i][j]=0;
+                }else{
+                    resultQ3[i][j]= fillTableLinear(array[i], array[j], matrix, linear)[array[i].length()][array[j].length()];
+                    resultQ4[i][j]= fillTableAffine(array[i], array[j], matrix, a, b)[array[i].length()][array[j].length()];
+                }
+            }
+        }
+        Util.printMatrix(resultQ3);
+        System.out.println();
+        System.out.println("Question 4:");
+        Util.printMatrix(resultQ3);
+
     }
 }
