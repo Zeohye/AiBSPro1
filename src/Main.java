@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.util.GregorianCalendar;
 import java.util.Map;
 
 /**
@@ -10,6 +11,10 @@ public class Main {
     static int[][] insTable;
     static int[][] delTable;
     public static void main(String[] args){
+
+        //run experiments
+        experiment();
+
         //run all eval tests
         if(args[0].equals("eval")){
             runEvalTest();
@@ -201,5 +206,22 @@ public class Main {
         System.out.println("Question 4:");
         Util.printMatrix(resultQ3);
 
+    }
+
+    public static void experiment(){
+        Map matrix = null;
+        try {
+            matrix = matrixParser.Parse("input/eval_scoreMatrix.txt");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        for(int i = 9000; i <= 9000; i +=1000){
+            String a = Util.generateString(i);
+            String b = Util.generateString(i);
+            long before = GregorianCalendar.getInstance().getTimeInMillis();
+            fillTableAffine(a, b, matrix, 5, 5);
+            long after = GregorianCalendar.getInstance().getTimeInMillis();
+            System.out.println(i + ": " + (after -before));
+        }
     }
 }

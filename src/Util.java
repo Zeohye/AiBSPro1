@@ -1,3 +1,5 @@
+import java.util.Random;
+
 /**
  * Created by Nils Henning on 02-09-2014.
  */
@@ -16,5 +18,20 @@ public class Util {
             }
             System.out.println();
         }
+    }
+
+    public static String generateString(int length){
+        char[] chars = "ACGT".toCharArray();
+        StringBuilder sb = new StringBuilder();
+
+        Random random = new Random();
+
+        for(int i = 0; i < length; i++){
+            char c = chars[random.nextInt(chars.length)];
+            sb.append(c);
+        }
+
+
+        return sb.toString();
     }
 }
