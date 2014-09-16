@@ -13,7 +13,12 @@ public class Main {
     public static void main(String[] args){
 
         //run experiments
-        experiment();
+        if(args[0].equals("experiment")){
+            int a = Integer.parseInt(args[1]);
+            int b = Integer.parseInt(args[2]);
+            experiment(a,b);
+            return;
+        }
 
         //run all eval tests
         if(args[0].equals("eval")){
@@ -208,14 +213,14 @@ public class Main {
 
     }
 
-    public static void experiment(){
+    public static void experiment(int start, int end){
         Map matrix = null;
         try {
             matrix = matrixParser.Parse("input/eval_scoreMatrix.txt");
         } catch (IOException e) {
             e.printStackTrace();
         }
-        for(int i = 9000; i <= 9000; i +=1000){
+        for(int i = start; i <= end; i +=1000){
             String a = Util.generateString(i);
             String b = Util.generateString(i);
             long before = GregorianCalendar.getInstance().getTimeInMillis();
